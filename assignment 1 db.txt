@@ -1,186 +1,9 @@
-create table productDB(
-	id number(10),
-	name varchar2(20) ,
-	manufacturer varchar2(20) ,
-	constraint p_pk primary key (name,manufacturer),
-	description varchar2(10),
-	stock number(10)
-);
 
-create table seller(
-	id number,name varchar(50)  not null, 
-	contact varchar(15) default '123456', 
-	constraint s_pk primary key(id)
-);
-insert into seller values(1,'name1','34345445');
-insert into seller values(2,'name2','12454545');
+#1 Create a Product db table with Primary key, as product name and manufacturer, consider below fields
 
-drop table product;
-create table product(
-			id number,
-			seller_id number,
-			make varchar(10), 
-			model varchar(10), 
-			description varchar(100),
-			constraint fk_seller foreign key (id) references seller(id) on delete cascade
-);
-
-insert into product values(1,1,'make1','model1','desc1');
-
-//##5
-// select p.name,s.contact from productDB p left outer join seller s on p.id=s.id;
-//
-
-create table transactions(
-	id number,
-	sId number(10),
-	productId number(10),
-	datee timestamp,
-	constraint fk_transactions foreign key(sId) references seller(id) on delete set null
-);
+product id, name, manufacturer, description, stock numbers
 
 
-
-3
-
-create table biddings(
-	b_id number  unique not null ,
-	p_name varchar(30), 
-	min_bidding number(9,2),
-	bidding_price number(9,2) check(bidding_price > 0)
-);
-
-insert into biddings values(1,'Abcd',45.67,56.12);
-
-alter table biddings add constraint c_b check(min_bidding > 20);
-alter table biddings drop constraint c_b;
-
-
-create table palette_a(id int,color varchar(30) not null);
-insert into palette_a(id,color)values(1,'green');
-insert into palette_a(id,color)values(2,'blue');
-insert into palette_a(id,color)values(3,'yellow');
-insert into palette_a(id,color)values(3,'red');
-
-create table palette_b(id int,color varchar(30) not null);
-insert into palette_b(id,color)values(1,'cyan');
-insert into palette_b(id,color)values(2,'purple');
-insert into palette_b(id,color)values(5,'red');
-
-select *from palette_a;
-select *from palette_b;
-//join
-
-select a.id,a.color, b.id, b.color from palette_a a inner join palette_b b on a.color = b.color;
-
-create table seller8( 
-	sid int,
-	sname varchar(30),
-	scontact varchar(15)
-);
-insert into seller8 values(1,'sname1','scontact1');
-insert into seller8 values(2,'sname2','scontact2');
-insert into seller8 values(3,'sname3','scontact3');
-
-create table product8(
-	pid int,
-	sid int,
-	pname varchar(30),
-	pmake varchar(30)
-);
-insert into product8 values(1,1,'prod1','make1');
-insert into product8 values(2,2,'prod2','make2');
-insert into product8 values(3,3,'prod3','make3');
-
-select *from seller8;
-select *from product8;
-
-select s.sname, pname from seller8 s inner join product8 p on s.sid = p.sid;
-select s.sname, pname from seller8 s left join product8 p on s.sid = p.sid;
-select s.sname, pname from seller8 s right join product8 p on s.sid = p.sid;
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-create table product99(pid int,sid int , pmake varchar(50) , price number);
-insert into product99 values(1,1,'pmake1',11.11);
-insert into product99 values(2,1,'pmake1',11.11);
-insert into product99 values(3,2,'pmake1',11.11);
-insert into product99 values(3,2,'pmake1',11.11);
-select *from product99;
-
-select pid from product99 group by sid;
-
-select count(pid) from product99 group by sid;
-select avg(price) from product99 group by sid;
-select avg(price) from product99 group by sid order by avg(price);
-select avg(price) from product99 group by sid having avg(price) > 11; 	
-select avg(price) Avg_price from product99 group by sid having avg(price) > 11; 
-
-
-SQL> select id, color from palette_a union select id, color from palette_b;
-
-
-
-
-create table contacts(first_name varchar(50), last_name varchar(30), email varchar(30));
-insert into contacts values('Skhan','khan','skhan@email.com');	
-insert into contacts values('asingh','singh','singh@email.com');	
-insert into contacts values('Neel','Skho','neet@email.com');	
-select *from contacts;
-
-select first_name ||''|| last_name name,email, 'contact' from contacts union select first_name ||''|| last_name  name, email, 'employee' from 'employee'; 
-ORA-00903: invalid table name
-
-create table product6(pid int,pname varchar(25), pmake varchar(25));
-insert into product6 values(1,'pname1','pmake1');
-insert into product6 values(4,'pname2','pmake2');
-insert into product6 values(6,'pname3','pmake3');
-insert into product6 values(7,'pname4','pmake4');
-
-create table inventory(iid int,stock_numbers int);
-insert into inventory values(1,10);
-insert into inventory values(4,5);
-insert into inventory values(7,3);
-
-SQL> select pid from product6 intersect select iid from inventory;
-SQL> select pid from product6 minus select iid from inventory;
-
-
-SQL> select *from product6 where pid not in (select pid from inventory);
-SQL> select *from product6 where pid in (select pid from inventory);
-
-create table products(
-		product_id int,
-		product_name varchar(30),
-		price number
-);
-
-insert into products values(1,'Hp Laptop',45.80);
-insert into products values(2,'Oppo mobile',451.80);
-insert into products values(3,'LED Tv',2.80);
-insert into products values(4,'AC',150.80);
-
-SQL> select avg(price) from products;
-SQL> select *from products where price > (select avg(price) from products);
-
-
-SQL> select *from products where price < (select avg(price) from products);
-
-select *from products where price > some (100, 200);
-
-SQL> select *from products where price > any (100, 200);
-
-rename products to products999;
-rename products999 to products;
-
-set autocommit off;
-
-
-
-
-#1
 
 create table productDB(
 	id number(10),
@@ -191,18 +14,21 @@ create table productDB(
 	stock number(10)
 );
 
-#2
+#2 Can I use alter to add/remove primary key from already existing table?If so, how?
+
+
 
 alter table productdb drop constraint p_pk;
 alter table productdb add constraint p_pk primary key(name,manufacturer);
 
-#3
+#3 Give an example for self referential key, employee with one of the column as manager, and manager himself is another Employee
+
 
 CREATE TABLE employee ( employee_id int PRIMARY KEY, employee_name varchar(30), salary varchar(30), manager_id int,
  CONSTRAINT sr_fk_emp_man FOREIGN KEY (manager_id) REFERENCES employee(employee_id) );
 
 
-#4
+#4 In existing Product and Seller table scenario, create another table Transactions(with columns id, product id, date time, seller id), create foreign key constraint between Transactions table and Seller table with on delete set null clause.
 
 create table transactions(
 	id number,
@@ -214,7 +40,9 @@ create table transactions(
 
 
 
-#5
+#5 seller(sid, sname,scontact ),product(pid, sid, pname, pmake, pmodel)
+
+join, please try left and right outer joins separately
 
 
 create table seller8(
